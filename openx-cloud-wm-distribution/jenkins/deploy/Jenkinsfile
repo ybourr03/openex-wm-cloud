@@ -1,0 +1,56 @@
+package deploy
+
+pipeline {
+
+    options {
+        // Connection of the Gitlab Pipeline process
+        gitLabConnection('Gitlab')
+        gitlabCommitStatus(name: 'jenkins')
+    }
+
+
+    environment {
+        MAVEN_ARTIFACT_ID = readMavenPom().getArtifactId()
+        VERSION = readMavenPom().getVersion()
+
+    }
+
+    stages {
+        stage('Check Java'){
+            steps{
+                withMaven(options: [artifactsPublisher(disabled: true)], jdk: 'jdk8', maven: 'Maven 3.5') {
+                    sh 'mvn -v'
+                }
+            }
+        }
+        stage('Clean'){
+            steps{
+                withMaven(options: [artifactsPublisher(disabled: true)], jdk: 'jdk8', maven: 'Maven 3.5') {
+                    sh 'mvn clean'
+                }
+            }
+        }
+        stage('packaging back') {
+            steps {
+                withMaven(options: [artifactsPublisher(disabled: true)], jdk: 'jdk8', maven: 'Maven 3.5') {
+                    sh 'mvn install'
+                }
+            }
+        }
+        stage('Sonar Analysis') {
+            steps {
+                withMaven(options: [artifactsPublisher(disabled: true)], jdk: 'jdk8', maven: 'Maven 3.5') {
+                    sh 'mvn sonar:sonar'
+                }
+            }
+        }
+
+        stage('Deploy artifact') {
+            steps {
+                withMaven(options: [artifactsPublisher(disabled: true)], jdk: 'jdk8', maven: 'Maven 3.5') {
+                    sh 'mvn deploy'
+                }
+            }
+        }
+    }
+}

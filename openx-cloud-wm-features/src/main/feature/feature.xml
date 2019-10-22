@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features name="decathlon-${project.artifactId}-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.3.0">
+    <repository>mvn:org.apache.activemq/activemq-karaf/${activemq.version}/xml/features</repository>
+    <repository>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</repository>
+    <repository>mvn:com.oxit.flow.camel-fwk/fwk-features/${decathlon.fwk.version}/xml/features</repository>
+
+    <feature name="openx-cloud-wm-myroute" version="${project.version}" install="auto">
+        <details>${project.description}</details>
+
+        <feature>jndi</feature>
+        <feature>jms</feature>
+        <feature version="${camel.version}">camel-blueprint</feature>
+        <feature version="${camel.version}">camel-core</feature>
+        <feature version="${camel.version}">camel-jms</feature>
+
+        <feature version="${decathlon.fwk.version}">fwk-component-trace</feature>
+
+        <bundle start-level="100">mvn:${project.groupId}/openx-cloud-wm-myroute/${project.version}</bundle>
+
+        <configfile finalname="${karaf.etc}/decathlon.openx-cloud-wm.myroute.cfg" override="false">
+            mvn:${project.groupId}/openx-cloud-wm-myroute/${project.version}/cfg/decathlon.openx-cloud-wm.myroute
+        </configfile>
+    </feature>
+</features>
+
