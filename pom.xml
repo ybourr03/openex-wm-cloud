@@ -24,7 +24,7 @@
         <hawtio.version>1.5.11</hawtio.version>
         <camel.version>2.23.0</camel.version>
         <decathlon.fwk.version>1.7.2-SNAPSHOT</decathlon.fwk.version>
-        <junit-version>4.12</junit-version>
+        <junit-version>4.13.1</junit-version>
     </properties>
 
     <dependencyManagement>
